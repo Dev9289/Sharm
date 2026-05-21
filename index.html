@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharmatny</title>
+    <style>
+        /* CSS for the entire page */
+        body {
+            font-family: 'Tahoma', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ff1493;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff1493 0%, #ff1493 100%);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            margin: 10px 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav {
+            background-color: #a30064;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: #f8d56b;
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .showroom-background {
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: background-image 1s ease-in-out;
+        }
+
+        .showroom-title {
+            font-size: 4em;
+            color: #d6e485;
+            margin: 0;
+        }
+
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));   
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .car-card {
+            background-color: rgb(136, 37, 111);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.15);
+        }
+
+        .car-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .car-info {
+            padding: 15px;
+        }
+
+        .car-info h3 {
+            margin: 0 0 10px;
+            color: #ffffff;
+        }
+
+        .car-info p {
+            margin: 5px 0;
+            color: #ffffff;
+        }
+
+        .car-price {
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 1.2em;
+        }
+
+        .view-details-btn,
+        .interested-btn {
+            background-color: #3b3c36;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+
+        .view-details-btn {
+            margin-left: 10px;
+        }
+
+        .view-details-btn:hover,
+        .interested-btn:hover {
+            background-color: #1c3b74;
+        }
+
+        .contact-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-section h2 {
+            color: #2a5298;
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-form input,
+        .contact-form button {
+            margin: 10px 0;
+            padding: 12px;
+            width: 80%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .contact-form input:focus {
+            border-color: #2a5298;
+            box-shadow: 0 0 8px rgba(42, 82, 152, 0.3);
+            outline: none;
+        }
+
+        .contact-form button {
+            background-color: #2a5298;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .contact-form button:hover {
+            background-color: #1e3c72;
+            transform: translateY(-2px);
+        }
+
+        .contact-form button:active {
+            transform: translateY(0);
+        }
+
+        .footer {
+            background-color: #f38fa9;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        .made-by {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: rgb(252, 94, 141);
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            box-shadow: 0 5px 30px rgba(255, 253, 253, 0.3);
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .modal-car-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .modal-car-info {
+            margin-bottom: 20px;
+        }
+
+        .modal-car-info h2 {
+            color: #fdfdfd;
+            margin-top: 0;
+        }
+
+        .modal-car-specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .spec-icon {
+            margin-left: 10px;
+            color: #ffffff;
+        }
+
+        .image-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            color: #f7f7f7;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .image-nav-left {
+            left: 10px;
+        }
+
+        .image-nav-right {
+            right: 10px;
+        }
+
+        .description {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 4px;
+        }
+
+        .modal-price-btn {
+            background-color: #530202;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-block;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .modal-price-btn:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="#showroom">سوق العاهرات </a>
+        <a href="#contact">كلمني اجيلك</a>
+        <a href="#about">عن شرمطني </a>
+    </div>
+
+    <div class="showroom-background">
+        <h2 class="showroom-title" id="showroom">Sharmatny.com</h2>
+        <h3>لجميع أنواع الشرمطه و الأحبنه</h3>
+        <h3>  
+            رقم مدير اعمال نداء الحداد: 01008900013
+        </h3>
+        <h3> 01276709388 :رقم القواد  مدير اعمال مريم شرمطة </h3>
+        <h1> Founder : NDC</h1>
+        <h1> CO Founder : Body amgad </h1>
+
+    </div>
+
+    <div class="container">
+        <div class="cars-grid">
+            <!-- Car 1 - Mercedes-Benz S-Class -->
+            <div class="car-card">
+                <img src="Screenshot_20250725_035906_Instagram.jpg" alt="Mercedes-Benz S-Class" class="car-image">
+                <div class="car-info">
+                    <h3>Kareem Moss3ad</h3>
+                    <p>اجر امي من تحت </p>
+                    <p class="car-price"> 1 EGP / hour</p>
+                    <button class="interested-btn" onclick="scrollToContact()">لليجار اليومي</button>
+                    <button class="view-details-btn" onclick="openCarModal('car1')">تفاصيل اللبواي</button>
+                </div>
+            </div>
+            
+            <!-- Car 2 - BMW 7 Series -->
+            <div class="car-card">
+                <img src="istockphoto-1400779382-2048x2048.jpg" alt="BMW 7 Series" class="car-image">
+                <div class="car-info">
+                    <h3>preparing</h3>
+                    <p>Model 2023</p>
+                    <p class="car-price">0 EGP</p>
+                    <button class="interested-btn" onclick="scrollToContact()">لليجار اليومي</button>
+                    <button class="view-details-btn" onclick="openCarModal('car2')">تفاصيل اللبواي</button>
+                </div>
+            </div>
+            
+            <!-- Car 3 - Audi A8 -->
+            <div class="car-card">
+                <img src="istockphoto-1400779382-2048x2048.jpg" alt="Audi A8" class="car-image">
+                <div class="car-info">
+                    <h3>preparing</h3>
+                    <p>Model 2023</p>
+                    <p class="car-price">0 EGP</p>
+                    <button class="interested-btn" onclick="scrollToContact()">لليجار اليومي</button>
+                    <button class="view-details-btn" onclick="openCarModal('car3')">تفاصيل اللبواي</button>
+                </div>
+            </div>
+            
+            <!-- Car 4 - Lexus LS -->
+            <div class="car-card">
+                <img src="istockphoto-1400779382-2048x2048.jpg" alt="Lexus LS" class="car-image">
+                <div class="car-info">
+                    <h3>preparing</h3>
+                    <p>Model 2023</p>
+                    <p class="car-price">0 EGP</p>
+                    <button class="interested-btn" onclick="scrollToContact()">لليجار اليومي</button>
+                    <button class="view-details-btn" onclick="openCarModal('car4')">تفاصيل اللبواي</button>
+                </div>
+            </div>
+            
+            <!-- Car 5 - Porsche Panamera -->
+            <div class="car-card">
+                <img src="istockphoto-1400779382-2048x2048.jpg" alt="Porsche Panamera" class="car-image">
+                <div class="car-info">
+                    <h3>preparing</h3>
+                    <p>Model 2023</p>
+                    <p class="car-price">0 EGP</p>
+                    <button class="interested-btn" onclick="scrollToContact()">لليجار اليومي</button>
+                    <button class="view-details-btn" onclick="openCarModal('car5')">تفاصيل اللبواي</button>
+                </div>
+            </div>
+            
+            <!-- Car 6 - Range Rover Sport -->
+            <div class="car-card">
+                <img src="istockphoto-1400779382-2048x2048.jpg" alt="Range Rover Sport" class="car-image">
+                <div class="car-info">
+                    <h3>preparing</h3>
+                    <p>Model 2023</p>
+                    <p class="car-price">0 EGP</p>
+                    <button class="interested-btn" onclick="scrollToContact()">لليجار اليومي</button>
+                    <button class="view-details-btn" onclick="openCarModal('car6')">تفاصيل اللبواي</button>
+                </div>
+            </div>
+            
+            <!-- Car 7 - Bentley Flying Spur -->
+            <div class="car-card">
+                <img src="istockphoto-1400779382-2048x2048.jpg" alt="Bentley Flying Spur" class="car-image">
+                <div class="car-info">
+                    <h3>preparing</h3>
+                    <p>Model 2023</p>
+                    <p class="car-price">0 EGP</p>
+                    <button class="interested-btn" onclick="scrollToContact()">لليجار اليومي</button>
+                    <button class="view-details-btn" onclick="openCarModal('car7')">تفاصيل اللبواي</button>
+                </div>
+            </div>
+            
+            <!-- Car 8 - Rolls Royce Ghost -->
+            <div class="car-card">
+                <img src="istockphoto-1400779382-2048x2048.jpg" alt="Rolls Royce Ghost" class="car-image">
+                <div class="car-info">
+                    <h3>preparing</h3>
+                    <p>Model 2023</p>
+                    <p class="car-price">0 EGP</p>
+                    <button class="interested-btn" onclick="scrollToContact()">لليجار اليومي</button>
+                    <button class="view-details-btn" onclick="openCarModal('car8')">تفاصيل اللبواي</button>
+                </div>
+            </div>
+            
+            <!-- Car 9 - Ferrari Portofino -->
+            <div class="car-card">
+                <img src="istockphoto-1400779382-2048x2048.jpg" alt="Ferrari Portofino" class="car-image">
+                <div class="car-info">
+                    <h3>preparing</h3>
+                    <p>Model 2023</p>
+                    <p class="car-price">0 EGP</p>
+                    <button class="interested-btn" onclick="scrollToContact()">لليجار اليومي</button>
+                    <button class="view-details-btn" onclick="openCarModal('car9')">تفاصيل اللبواي</button>
+                </div>
+            </div>
+            
+            <!-- Car 10 - Lamborghini Huracan -->
+            <div class="car-card">
+                <img src="istockphoto-1400779382-2048x2048.jpg" alt="Lamborghini Huracan" class="car-image">
+                <div class="car-info">
+                    <h3>preparing</h3>
+                    <p>Model 2023</p>
+                    <p class="car-price">0 EGP</p>
+                    <button class="interested-btn" onclick="scrollToContact()">لليجار اليومي</button>
+                    <button class="view-details-btn" onclick="openCarModal('car10')">تفاصيل اللبواي</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-section" id="contact">
+            <h2>لو انت هايج سيب رقمك </h2>
+
+            <form class="contact-form" onsubmit="sendContact(event)">
+                <input type="text" id="name" placeholder="Your Name" required>
+                <input type="tel" id="phone" placeholder="Your Phone Number" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <div class="contact-section" id="about">
+            <h2>عن شرمطني </h2>
+            <p> لتاجير امهات الخولات.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p>Sharmatny.com © 2025. All rights reserved.</p>
+            <p class="made-by">Made by NDC</p>
+        </div>
+    </div>
+
+    <!-- Modal for car details -->
+    <div id="carModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCarModal()">×</span>
+            <div class="modal-car-info">
+                <h2 id="modalCarTitle"></h2>
+                <p id="modalCarModel"></p>
+                <p id="modalCarPrice" class="car-price"></p>
+                <a href="#contact" class="modal-price-btn" onclick="closeCarModal()">لليجار اليومي </a>
+            </div>
+            <div style="position: relative;">
+                <img id="mainCarImage" class="modal-car-image" src="" alt="">
+                <span class="image-nav image-nav-left" onclick="changeImage(-1)">❮</span>
+                <span class="image-nav image-nav-right" onclick="changeImage(1)">❯</span>
+            </div>
+            <div class="modal-car-specs">
+                <div class="spec-item">
+                    <span>Max Speed:</span>
+                    <span id="modalMaxSpeed"></span>
+                </div>
+                <div class="spec-item">
+                    <span>Engine CC:</span>
+                    <span id="modalEngineCC"></span>
+                </div>
+                <div class="spec-item">
+                    <span>Horsepower:</span>
+                    <span id="modalHorsepower"></span>
+                </div>
+            </div>
+            <div class="description" id="modalDescription"></div>
+        </div>
+    </div>
+
+    <script>
+        // Car data with multiple images, specs, and prices for each car
+        const carData = {
+            car1: {
+                title: "اNedaa el hadad ",
+                maxSpeed: "جراية",
+                model: "1982",
+                engineCC: "مكنة",
+                horsepower: "milf",
+                price: "1 EGP",
+                description: "nedaa el hadad ll nek 3la el blat w el mass w ba7eb el nik el 3anef",
+                images: [
+                    "Screenshot_20250725_035906_Instagram.jpg",
+                    "Screenshot_20250725_035846_Instagram.jpg",
+                    "Screenshot_20250725_035952_TikTok.jpg",
+                    "Screenshot_20250725_040230_TikTok.jpg",
+                ]
+            },
+            car2: {
+                title: "mariam",
+                model: "2023 Model",
+                maxSpeed: "250 km/h",
+                engineCC: "4395 cc",
+                horsepower: "536 hp",
+                price: "700,000 EGP",
+                description: "The BMW 7 Series combines dynamic performance with sophisticated luxury, featuring advanced driver assistance and premium comfort.",
+                images: [
+                    "istockphoto-1400779382-2048x2048.jpg",
+                    "istockphoto-1400779382-2048x2048.jpg",
+                 
+                ]
+            },
+            car3: {
+                title: "Audi A8",
+                model: "2023 Model",
+                maxSpeed: "250 km/h",
+                engineCC: "2995 cc",
+                horsepower: "340 hp",
+                price: "680,000 EGP",
+                description: "The Audi A8 offers a perfect blend of elegance and innovation, with a spacious interior and advanced technology for a refined driving experience.",
+                images: [
+                    "istockphoto-1400779382-2048x2048.jpg",
+                    "istockphoto-1400779382-2048x2048.jpg",
+
+                ]
+            },
+            car4: {
+                title: "Lexus LS",
+                model: "2023 Model",
+                maxSpeed: "219 km/h",
+                engineCC: "3445 cc",
+                horsepower: "416 hp",
+                price: "720,000 EGP",
+                description: "The Lexus LS delivers serene luxury and hybrid efficiency, with meticulous craftsmanship and advanced safety features.",
+                images: [
+                    "istockphoto-1400779382-2048x2048.jpg",
+                    "istockphoto-1400779382-2048x2048.jpg",
+                  
+                ]
+
+            }
+        };
+
+        let currentCarId = null;
+        let currentImageIndex = 0;
+
+        // Background images for slideshow
+        const backgroundImages = [
+            'Screenshot_20250725_035906_Instagram.jpg',
+            'Snapchat-1703124097.jpg',
+            'IMG-20250725-WA0006.jpg',
+            'Screenshot_20231125_132035_Instagram.jpg',
+            'Snapchat-1284707503.jpg',
+            'Snapchat-1990760981.jpg',
+            'Snapchat-2047577384.jpg'
+        ];
+
+        let currentBackgroundIndex = 0;
+
+        // Function to change background image
+        function changeBackground() {
+            const showroomBackground = document.querySelector('.showroom-background');
+            showroomBackground.style.backgroundImage = `url(${backgroundImages[currentBackgroundIndex]})`;
+            currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
+        }
+
+        // Initialize background and set interval
+        window.onload = function() {
+            changeBackground();
+            setInterval(changeBackground, 3500);
+
+            // Send visitor notification
+            fetch(visitorWebhook, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: 'A visitor has accessed Salem Showroom website!'
+                })
+            }).catch(error => console.error('Error sending visitor notification:', error));
+        };
+
+        // Webhook URLs
+        const visitorWebhook = 'https://discord.com/api/webhooks/1398088816690204763/rbzNtv69DJtv3lnIYGY7kDAR-Z4Sadmau9t1VBi_GyMyLUCl7wFTnLjRkF-9KFJhwDiA';
+        const contactWebhook = 'https://discord.com/api/webhooks/1398088816690204763/rbzNtv69DJtv3lnIYGY7kDAR-Z4Sadmau9t1VBi_GyMyLUCl7wFTnLjRkF-9KFJhwDiA';
+
+        // Function to open car modal and send notification
+        async function openCarModal(carId) {
+            currentCarId = carId;
+            currentImageIndex = 0;
+            const modal = document.getElementById('carModal');
+            const car = carData[carId];
+            
+            document.getElementById('modalCarTitle').textContent = car.title;
+            document.getElementById('modalCarModel').textContent = car.model;
+            document.getElementById('modalCarPrice').textContent = car.price;
+            document.getElementById('modalMaxSpeed').textContent = car.maxSpeed;
+            document.getElementById('modalEngineCC').textContent = car.engineCC;
+            document.getElementById('modalHorsepower').textContent = car.horsepower;
+            document.getElementById('modalDescription').textContent = car.description;
+            document.getElementById('mainCarImage').src = car.images[0];
+            document.getElementById('mainCarImage').alt = car.title;
+            
+            modal.style.display = 'block';
+
+            // Send notification for car view
+            try {
+                await fetch(visitorWebhook, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        content: `A visitor viewed details for ${car.title}!`
+                    })
+                });
+            } catch (error) {
+                console.error('Error sending car view notification:', error);
+            }
+        }
+
+        // Function to change image
+        function changeImage(direction) {
+            const car = carData[currentCarId];
+            currentImageIndex = (currentImageIndex + direction + car.images.length) % car.images.length;
+            document.getElementById('mainCarImage').src = car.images[currentImageIndex];
+        }
+
+        // Function to close car modal
+        function closeCarModal() {
+            document.getElementById('carModal').style.display = 'none';
+        }
+
+        // Function to scroll to contact section
+        function scrollToContact() {
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('carModal');
+            if (event.target == modal) {
+                closeCarModal();
+            }
+        }
+
+        // Function to handle contact form submission
+        async function sendContact(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            
+            try {
+                await fetch(contactWebhook, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        content: `New contact form submission:\nName: ${name}\nPhone: ${phone}\@everyone`
+                    })
+                });
+                alert(`Thank you, ${name}! We will contact you shortly at ${phone}.`);
+            } catch (error) {
+                alert('Error sending message. Please try again later.');
+                console.error('Error:', error);
+            }
+            
+            document.getElementById('name').value = '';
+            document.getElementById('phone').value = '';
+        }
+    </script>
+</body>
+</html>
